@@ -5,10 +5,13 @@
 package com.alipay.cloudrun.web;
 
 import com.alipay.cloudrun.aop.annotation.ControllerPointCut;
+import com.alipay.cloudrun.client.ServiceClient;
 import com.alipay.cloudrun.client.SimpleFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * 测试服务访问
@@ -18,6 +21,9 @@ public class HttpTestController {
 
     @Autowired
     private SimpleFeignClient simpleFeignClient;
+
+    @Resource
+    private ServiceClient serviceClient;
 
     /**
      * 微服务接口，用户可根据实际情况调用
@@ -37,5 +43,11 @@ public class HttpTestController {
         String hostName = System.getenv("HOSTNAME") == null ? "springboot-demo" : System.getenv("HOSTNAME");
         String result = "欢迎使用云托管!&服务版本：" + version + "&实例主机：" + hostName;
         return result;
+    }
+
+    @ControllerPointCut
+    @GetMapping("/queryService")
+    public String queryService() {
+        return serviceClient.getServiceInfo();
     }
 }
