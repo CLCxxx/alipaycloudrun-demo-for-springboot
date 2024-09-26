@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * 微服务模版
  */
-@FeignClient(name = "feignClient", url = "${feign.url}")
+@FeignClient(name = "feignClient", url = "${service.url}")
 public interface SimpleFeignClient {
 
     @SalPointCut
